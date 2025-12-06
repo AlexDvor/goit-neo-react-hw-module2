@@ -1,25 +1,20 @@
-import Profile from './components/Profile/Profile';
-import FriendList from './components/FriendList/FriendList';
-import TransactionHistory from './components/TransactionHistory/TransactionHistory';
-
-import userData from '../src/userData.json';
-import friends from '../src/friends.json';
-import transactions from '../src/transactions.json';
-
 import './App.css';
 
+import Description from './components/Description/Description';
+import { useState } from 'react';
+import Options from './components/Options/Options';
+import Feedback from './components/Feedback/Feedback';
+
 function App() {
+	const [feedback, setFeedBack] = useState({ good: 0, neutral: 0, bad: 0 });
 	return (
 		<div className='container'>
-			<Profile
-				name={userData.username}
-				tag={userData.tag}
-				location={userData.location}
-				image={userData.avatar}
-				stats={userData.stats}
+			<Description
+				title='Sip Happens Café'
+				description='Please leave your feedback about our service by selecting one of the options below.'
 			/>
-			<FriendList friends={friends} />
-			<TransactionHistory items={transactions} />
+			<Options />
+			<Feedback />
 		</div>
 	);
 }
