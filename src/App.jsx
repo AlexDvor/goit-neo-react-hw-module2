@@ -1,7 +1,7 @@
 import './App.css';
 
 import Description from './components/Description/Description';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Options from './components/Options/Options';
 import Feedback from './components/Feedback/Feedback';
 import Notification from './components/Notification/Notification';
@@ -13,9 +13,20 @@ const initialState = {
 };
 
 function App() {
-	const [feedback, setFeedBack] = useState(initialState);
+	const [feedback, setFeedBack] = useState(() => {
+		const getFeedBackData = localStorage.getItem('feedback');
+		if (getFeedBackData) {
+			return JSON.parse(getFeedBackData);
+		}
+
+		return initialState;
+	});
 	const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
 	const positiveFeedback = Math.round((feedback.good / totalFeedback) * 100);
+
+	useEffect(() => {
+		localStorage.setItem('feedback', JSON.stringify(feedback));
+	}, [feedback]);
 
 	const updateFeedback = feedbackType => {
 		feedbackType = feedbackType.toLowerCase();
