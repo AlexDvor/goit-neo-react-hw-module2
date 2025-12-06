@@ -1,0 +1,40 @@
+.card {
+	border: 4px solid black;
+	border-radius: 2%;
+	width: 320px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.userThumbAvatar {
+	height: 150px;
+	width: 150px;
+	overflow: hidden;
+	border-radius: 50%;
+	border: 1px solid black;
+	margin: 0px auto;
+}
+.userImage {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+.infoWrapper {
+	text-align: center;
+	padding-top: 10px;
+}
+
+.statsList {
+	display: flex;
+	justify-content: space-between;
+	background-color: rgb(194, 198, 201);
+	border-top: 2px solid rgb(102, 104, 107);
+	padding: 10px 15px;
+}
+
+.statsItem {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
