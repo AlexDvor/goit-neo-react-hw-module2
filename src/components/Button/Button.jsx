@@ -1,8 +1,11 @@
-const Button = ({ children }) => {
+const Button = ({ children, onHandleClick, isVisible = true }) => {
 	return (
-		<>
-			<button>{children}</button>
-		</>
+		<button
+			onClick={() => onHandleClick(children)}
+			style={{ display: isVisible ? 'inline-block' : 'none' }}
+		>
+			{children}
+		</button>
 	);
 };
 

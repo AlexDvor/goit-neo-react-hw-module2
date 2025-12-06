@@ -1,13 +1,15 @@
 import Button from '../Button/Button';
 import s from './Options.module.css';
 
-const Options = () => {
+const Options = ({ handleClick, isVisible }) => {
 	return (
 		<div className={s.container}>
-			<Button>Good</Button>
-			<Button>Neutral</Button>
-			<Button>Bad</Button>
-			<Button>Reset</Button>
+			<Button onHandleClick={handleClick}>Good</Button>
+			<Button onHandleClick={handleClick}>Neutral</Button>
+			<Button onHandleClick={handleClick}>Bad</Button>
+			<Button onHandleClick={handleClick} isVisible={isVisible}>
+				Reset
+			</Button>
 		</div>
 	);
 };
