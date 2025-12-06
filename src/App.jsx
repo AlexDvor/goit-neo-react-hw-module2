@@ -6,7 +6,8 @@ import Options from './components/Options/Options';
 import Feedback from './components/Feedback/Feedback';
 import Notification from './components/Notification/Notification';
 
-const initialState = {
+const STORAGE_KEY = 'feedback';
+const INITIAL_STATE = {
 	good: 0,
 	neutral: 0,
 	bad: 0,
@@ -14,32 +15,52 @@ const initialState = {
 
 function App() {
 	const [feedback, setFeedBack] = useState(() => {
-		const getFeedBackData = localStorage.getItem('feedback');
-		if (getFeedBackData) {
-			return JSON.parse(getFeedBackData);
+		const getFeedBackData = localStorage.getItem(STORAGE_KEY);
+		if (!getFeedBackData) return INITIAL_STATE;
+		try {
+			const parsed = JSON.parse(getFeedBackData);
+			if (
+				typeof parsed === 'object' &&
+				parsed !== null &&
+				'good' in parsed &&
+				'neutral' in parsed &&
+				'bad' in parsed
+			) {
+				return parsed;
+			}
+			return INITIAL_STATE;
+		} catch (error) {
+			console.warn(
+				'Invalid feedback in localStorage, resetting to initial state.',
+				error
+			);
+			return INITIAL_STATE;
 		}
-
-		return initialState;
 	});
+
 	const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
 	const positiveFeedback = Math.round((feedback.good / totalFeedback) * 100);
 
 	useEffect(() => {
-		localStorage.setItem('feedback', JSON.stringify(feedback));
+		try {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(feedback));
+		} catch (error) {
+			console.error('Failed to save feedback to localStorage:', error);
+		}
 	}, [feedback]);
 
 	const updateFeedback = feedbackType => {
-		feedbackType = feedbackType.toLowerCase();
+		if (typeof feedbackType !== 'string') return;
+		const key = feedbackType.toLowerCase();
 
-		if (typeof feedbackType === 'string' && feedbackType === 'reset') {
-			setFeedBack(initialState);
+		if (key === 'reset') {
+			setFeedBack(INITIAL_STATE);
 			return;
 		}
 
-		if (typeof feedbackType === 'string' && feedbackType !== 'reset') {
-			setFeedBack(prev => ({ ...prev, [feedbackType]: prev[feedbackType] + 1 }));
-			return;
-		}
+		const feedBackKeys = Object.keys(feedback);
+		if (!feedBackKeys.includes(key)) return;
+		setFeedBack(prev => ({ ...prev, [key]: prev[key] + 1 }));
 	};
 
 	return (
